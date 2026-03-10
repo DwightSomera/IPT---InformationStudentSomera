@@ -1,0 +1,156 @@
+
+ .app-layout {
+  display: flex;
+  min-height: 100vh;
+  font-weight: 600;
+  background-color: #ffffff; 
+}
+ 
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff; 
+}
+ 
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;  
+  color: #333;  
+  padding: 20px;
+  border-right: 1px solid #ddd;  
+  box-shadow: 2px 0 5px rgba(0,0,0,0.05);  
+}
+ 
+
+.AddStudent-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 20px;
+  gap: 20px;
+}
+ 
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #ffffff;
+  color: #000000;
+}
+ 
+.Form-container {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  gap: 15px;
+}
+
+/* Make MUI TextField controls a sensible fixed width when used inline */
+.AddStudent-container .MuiFormControl-root,
+.AddStudent-container .MuiTextField-root {
+  min-width: 110px;
+  width: 140px;
+  max-width: 220px;
+}
+
+/* Improve the input padding for a cleaner look */
+.AddStudent-container .MuiInputBase-input {
+  padding: 10px 12px;
+}
+
+/* Ensure buttons don't shrink and have spacing */
+.AddStudent-container .MuiButton-root {
+  margin-left: 6px;
+}
+ 
+.AddStudent-container h1 {
+  text-align: left;
+  color: #333333;
+  margin-bottom: 30px;
+  width: 100%;
+}
+ 
+.add-btn {
+  background-color: #333 !important;
+  color: white !important;
+  margin-top: 10px;
+}
+ 
+.add-btn:hover {
+  background-color: #555 !important;
+}
+ 
+.preview-card {
+  width: 400px;
+  border: 1px solid #ddd; 
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fcfcfc; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 420px;
+}
+
+.preview-wrapper h2 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #222;
+}
+
+.preview-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.preview-item:last-child {
+  border-bottom: none;
+}
+
+.preview-label {
+  font-weight: 600;
+  color: #333;
+}
+
+.preview-value {
+  color: #666;
+}
+
+.AddStudent-container {
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .AddStudent-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .Form-container, .preview-card, .preview-wrapper { width: 100%; }
+}
+
+/* stack form fields vertically */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.form .MuiTextField-root {
+  width: 100%;
+}
+
+.add-btn {
+  align-self: flex-start;
+}   

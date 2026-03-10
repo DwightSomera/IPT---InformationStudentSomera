@@ -1,0 +1,66 @@
+[
+  {
+    "idNumber": "8",
+    "firstName": "kk",
+    "lastName": "kjljkl",
+    "middleName": "jkljkl",
+    "course": "jkljkl",
+    "yearLevel": "10"
+  },
+  {
+    "idNumber": "3",
+    "firstName": "hjkhj",
+    "lastName": "hjkhj",
+    "middleName": "khjkhj",
+    "course": "khjk",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "41273230",
+    "firstName": "Dwight",
+    "lastName": "Somera",
+    "middleName": "M",
+    "course": "BSIT",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "5",
+    "firstName": "dasda",
+    "lastName": "asdasd",
+    "middleName": "asd",
+    "course": "asdasdasda",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "4",
+    "firstName": "dwight",
+    "lastName": "Somerq",
+    "middleName": "M",
+    "course": "BSIT",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "",
+    "firstName": "",
+    "lastName": "",
+    "middleName": "",
+    "course": "",
+    "yearLevel": ""
+  },
+  {
+    "idNumber": "3",
+    "firstName": "Dwight",
+    "lastName": "Somera",
+    "middleName": "Marquez",
+    "course": "BSIT",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "12344",
+    "firstName": "dwight",
+    "lastName": "somrea",
+    "middleName": "marquez",
+    "course": "bsit",
+    "yearLevel": "3"
+  }
+]
