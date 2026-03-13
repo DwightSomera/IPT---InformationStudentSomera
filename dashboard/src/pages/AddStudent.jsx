@@ -12,6 +12,7 @@ function AddStudent () {
     const [course, setCourse] = useState('');
     const [yearLevel, setYearLevel] = useState('');
     const [users, setUsers] = useState([]);  // replaced/add users state
+    const [editIndex, setEditIndex] = useState(null) // Track which student is being edited (edit)
 
         // Fetch students from the server
         function fetchStudents(){
@@ -53,7 +54,52 @@ function AddStudent () {
             console.error(error);
             alert('Error adding student');
         }
+    }
+
+
+
+
+
+    //edit student
+    function handleEdit(user, index) {
+      setIdNumber(user.idNumber);
+      setFirstName(user.firstName);
+        setLastName(user.lastName);
+        setMiddleName(user.middleName);
+        setCourse(user.course);
+        setYearLevel(user.yearLevel); // Set the index of the student being edited
+        setEditIndex(index);
+
+    }
+
+    async function handleUpdateStudent() {
+      try {
+        await axios.put(`http://localhost:1337/edit-students/${editIndex}`, {
+          idNumber: idNumber,
+          firstName: firstName,
+          lastName: lastName,
+          middleName: middleName,
+          course: course,
+          yearLevel: yearLevel
+        });
+        alert('Student updated successfully');
+        fetchStudents(); // refresh list
+        setIdNumber('');
+        setFirstName('');
+        setLastName('');        
+        setMiddleName('');
+        setCourse('');
+        setYearLevel('');
+        setEditIndex(null);
+      } catch (error) {
+        console.error(error);
+        alert('Error updating student');
+      }
     };
+
+
+
+
 
     return (
     <div className="home-container">
@@ -66,18 +112,26 @@ function AddStudent () {
                     <TextField id="middle-name" label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
                     <TextField id="course" label="Course" variant="outlined" type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
                     <TextField id="year-level" label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} />
-                    <Button className="add-btn" variant="contained" size="large" color="primary" onClick={handleAddStudent}>Add Student</Button>
+
+
+                    {editIndex === null ? (
+                        <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
+                    ) : 
+                        <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
+                    }
+  
+                    
            
            <h2>Students List</h2>
            <Table>  
             <TableBody>
                 <TableRow>
-                    <TableCell>ID Cell</TableCell>
-                    <TableCell>First Name Cell</TableCell>
-                    <TableCell>Last Name Cell</TableCell>
-                    <TableCell>Middle Name Cell</TableCell>
-                    <TableCell>Course Cell</TableCell>
-                    <TableCell>Year Level Cell</TableCell>
+                    <TableCell>ID</TableCell>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                    <TableCell>Middle Name</TableCell>
+                    <TableCell>Course</TableCell>
+                    <TableCell>Year Level</TableCell>
                 </TableRow>
                      {users.map((user, index) => (
                         <TableRow key={index}>
@@ -87,6 +141,11 @@ function AddStudent () {
                             <TableCell>{user.middleName}</TableCell>
                             <TableCell>{user.course}</TableCell>
                             <TableCell>{user.yearLevel}</TableCell>
+
+                            <TableCell>
+                                <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
+                            </TableCell>
+                                
                         </TableRow>
                      ))}
 

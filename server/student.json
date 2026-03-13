@@ -40,12 +40,12 @@
     "yearLevel": "3"
   },
   {
-    "idNumber": "",
-    "firstName": "",
-    "lastName": "",
-    "middleName": "",
-    "course": "",
-    "yearLevel": ""
+    "idNumber": "123123",
+    "firstName": "asdasd",
+    "lastName": "asdas",
+    "middleName": "dasdas",
+    "course": "das213",
+    "yearLevel": "123123"
   },
   {
     "idNumber": "3",
@@ -61,6 +61,54 @@
     "lastName": "somrea",
     "middleName": "marquez",
     "course": "bsit",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "3",
+    "firstName": "vjhbvj",
+    "lastName": "jghj",
+    "middleName": "hjghj",
+    "course": "ghjgj",
+    "yearLevel": "4"
+  },
+  {
+    "idNumber": "999999",
+    "firstName": "benson",
+    "lastName": "marzan ",
+    "middleName": "marquez",
+    "course": "BSCS",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "4",
+    "firstName": "ljkl",
+    "lastName": "jkljkl",
+    "middleName": "jkljkl",
+    "course": "jkljkl",
+    "yearLevel": "2"
+  },
+  {
+    "idNumber": "3",
+    "firstName": "vvvv",
+    "lastName": "vvv",
+    "middleName": "vvv",
+    "course": "vvv",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "3",
+    "firstName": "yutyutyty",
+    "lastName": "hfghghgh",
+    "middleName": "hghg",
+    "course": "hghfghfg",
+    "yearLevel": "3"
+  },
+  {
+    "idNumber": "43858374",
+    "firstName": "Cleverson",
+    "lastName": "Marzan",
+    "middleName": "L",
+    "course": "BSIT ",
     "yearLevel": "3"
   }
 ]
