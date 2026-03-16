@@ -48,7 +48,7 @@
     "yearLevel": "123123"
   },
   {
-    "idNumber": "3",
+    "idNumber": "6",
     "firstName": "Dwight",
     "lastName": "Somera",
     "middleName": "Marquez",
@@ -118,5 +118,13 @@
     "middleName": "dfgdfg",
     "course": "dfgdfg",
     "yearLevel": "545"
+  },
+  {
+    "idNumber": "69",
+    "firstName": "Ambatukam",
+    "lastName": "Buss",
+    "middleName": "BUSSING",
+    "course": "BSIT",
+    "yearLevel": "3"
   }
 ]

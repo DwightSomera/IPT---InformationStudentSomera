@@ -101,60 +101,53 @@ function AddStudent () {
 
 
 
-    return (
-    <div className="home-container">
-        <div className="panel form-wrapper">
-            <h1>Add Student</h1>
-            <div className="form">
-                    <TextField id="id-number" label="ID Number" variant="outlined" type="number" value={idNumber} onChange={(e) => setIdNumber(e.target.value)} />
-                    <TextField id="first-name" label="First Name" variant="outlined"  type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    <TextField id="last-name" label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <TextField id="middle-name" label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
-                    <TextField id="course" label="Course" variant="outlined" type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
-                    <TextField id="year-level" label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} />
-
-
-                    {editIndex === null ? (
-                        <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
-                    ) : 
-                        <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
-                    }
-  
-                    
-           
-           <h2>Students List</h2>
-           <Table>  
-            <TableBody>
-                <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>First Name</TableCell>
-                    <TableCell>Last Name</TableCell>
-                    <TableCell>Middle Name</TableCell>
-                    <TableCell>Course</TableCell>
-                    <TableCell>Year Level</TableCell>
-                </TableRow>
-                     {users.map((user, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{user.idNumber}</TableCell>
-                            <TableCell>{user.firstName}</TableCell>  
-                            <TableCell>{user.lastName}</TableCell>
-                            <TableCell>{user.middleName}</TableCell>
-                            <TableCell>{user.course}</TableCell>
-                            <TableCell>{user.yearLevel}</TableCell>
-
-                            <TableCell>
-                                <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
-                            </TableCell>
-                                
-                        </TableRow>
-                     ))}
-
-            </TableBody>
-           </Table>
-      
+        return (
+            <div className="AddStudent-container">
+                <div className="form-wrapper">
+                    <h1>Add Student</h1>
+                    <div className="form">
+                        <TextField id="id-number" label="ID Number" variant="outlined" type="number" value={idNumber} onChange={(e) => setIdNumber(e.target.value)} />
+                        <TextField id="first-name" label="First Name" variant="outlined"  type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                        <TextField id="last-name" label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        <TextField id="middle-name" label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
+                        <TextField id="course" label="Course" variant="outlined" type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
+                        <TextField id="year-level" label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} />
+                        {editIndex === null ? (
+                            <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
+                        ) : 
+                            <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
+                        }
+                    </div>
+                </div>
+                <div className="students-list-wrapper">
+                    <h2>Students List</h2>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>First Name</TableCell>
+                                <TableCell>Last Name</TableCell>
+                                <TableCell>Middle Name</TableCell>
+                                <TableCell>Course</TableCell>
+                                <TableCell>Year Level</TableCell>
+                            </TableRow>
+                            {users.map((user, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>{user.idNumber}</TableCell>
+                                    <TableCell>{user.firstName}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>{user.middleName}</TableCell>
+                                    <TableCell>{user.course}</TableCell>
+                                    <TableCell>{user.yearLevel}</TableCell>
+                                    <TableCell>
+                                        <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
             </div>
-        </div>
-    </div>
-    )
+        )
 }
 export default AddStudent;
