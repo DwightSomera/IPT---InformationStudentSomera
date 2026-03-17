@@ -10,6 +10,7 @@ function Users() {
     const [password, setPassword] = useState('')
     const [users, setUsers] = useState([])  
     const [editIndex, setEditIndex] = useState(null) // Track which user is being edited (edit)
+    const [deleteIndex, setDeleteIndex] = useState(null) // Track which user is being deleted (delete)
 
 //Fetch users from the server
 function fetchUsers() {
@@ -51,6 +52,7 @@ useEffect(() => {
 
         }catch (error) {
             console.error(error);
+            alert('Error adding user');
         }
       }
 
@@ -85,6 +87,18 @@ useEffect(() => {
     };
 
 
+  //Delete User
+  async function handleDelete(user, index) {
+    try {
+      await axios.delete(`http://localhost:1337/delete-user/${index}`);
+      alert('User deleted successfully');
+      fetchUsers(); // Refresh the user list after deleting
+    }
+      catch (error) {
+        console.error(error);
+      }
+  }
+
 
 
 
@@ -99,9 +113,11 @@ useEffect(() => {
         
         {editIndex === null ?(
           <Button variant = "contained" color="primary" onClick={handleAddUser}>Add User</Button>
-        ) :
+        ) : (
         <Button variant = "contained" color="primary" onClick={handleUpdateUser}>Update User</Button>
+        ) 
       }
+      
 
 
     <h2>User List</h2>
@@ -112,15 +128,22 @@ useEffect(() => {
                             <TableCell>Email</TableCell>
                             <TableCell>Password</TableCell>                      
                         </TableRow>
-                        {users.map((user, index) => (
+                        {users.map((user, index) => ( 
                             <TableRow key={index}>
                                 <TableCell>{user.name}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.password}</TableCell>
 
+
                                 <TableCell>
                                   <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
                                 </TableCell>
+
+                                
+                                <TableCell>
+                                  <Button variant="outlined" color="primary" onClick={() => handleDelete(user, index)}>Delete</Button>
+                                </TableCell>
+
 
                             </TableRow>
                         ))}
@@ -129,7 +152,7 @@ useEffect(() => {
 
 
       </div>  
-    </div>
+    </div>  
   )
 }
 
