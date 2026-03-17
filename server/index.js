@@ -1,12 +1,15 @@
 const express = require('express');
-
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const upload = require('./middleware/upload');
  
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
  
  
 //Add user
@@ -39,7 +42,7 @@ app.get('/users', (req, res) => {
 });
 
 
-//Edit user
+// Update/Edit user
 app.put("/edit-user/:index", (req, res) => {
   const index = req.params.index;
   const updatedUser = req.body;
@@ -67,13 +70,73 @@ app.put("/edit-user/:index", (req, res) => {
   });
 });
  
+//Delete user
+app.delete("/delete-user/:index", (req, res) => {
+  const index = req.params.index;
+
+  fs.readFile("data.json", "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).send("Error reading file");
+    }
+
+    const users = JSON.parse(data);
+
+    if (users[index] === undefined) {
+      return res.status(404).send("User not found");
+    }
+
+    users.splice(index, 1);
+
+    fs.writeFile("data.json", JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        return res.status(500).send("Error writing file");
+      }
+      res.send("User deleted successfully!");
+    });
+
+  });
+});
 
 
 
+// Upload student photo
+app.post('/upload-student-photo', upload.single('studentPhoto'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'No file uploaded' 
+    });
+  }
 
+  res.json({
+    success: true,
+    message: 'Photo uploaded successfully',
+    filename: req.file.filename,
+    filepath: req.file.filename
+  });
+});
 
-
-
+// Error handling for upload
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ 
+        success: false,
+        message: 'File too large. Maximum size is 5MB' 
+      });
+    }
+    return res.status(400).json({ 
+      success: false,
+      message: err.message 
+    });
+  } else if (err) {
+    return res.status(400).json({ 
+      success: false,
+      message: err.message 
+    });
+  }
+  next();
+});
 
 
 //Add student
@@ -104,6 +167,7 @@ app.put("/edit-user/:index", (req, res) => {
 //   });
 // });
  
+
 
 //Add student
 app.post('/add-student', (req, res) => {
@@ -164,6 +228,30 @@ app.put("/edit-students/:index", (req, res) => {
 });
 
 
+//Delete student
+app.delete("/delete-student/:index", (req, res) => {
+  const index = parseInt(req.params.index);
+
+  fs.readFile("student.json", "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).send("Error reading file");
+    }
+    const users = JSON.parse(data);
+    if(users[index] === undefined) {
+      return res.status(404).send("Student not found");
+    }
+    users.splice(index, 1);
+    fs.writeFile("student.json", JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        return res.status(500).send("Error writing file");
+      }
+      res.send("Student deleted successfully");
+     });
+  })
+});
+
+
+
 
 
 
@@ -191,6 +279,10 @@ res.send(`You searched for: ${query}`);
 });
  
  
+
+
+
+
 // Start the server
 const port = 1337;
  
