@@ -1,10 +1,10 @@
 const express = require('express');
-
+ 
 const cors = require('cors');
 const fs = require('fs');
  
 const app = express();
-
+ 
 app.use(cors());
 app.use(express.json());
  
@@ -26,19 +26,19 @@ app.post('/add-user', (req, res) => {
     });
   });
 });
-
-
+ 
+ 
 //fetch user
 app.get('/users', (req, res) => {
   fs.readFile('data.json', 'utf8', (err, data) => {
-    if (err) {  return res.status(500).send('Error reading file'); 
-
+    if (err) {  return res.status(500).send('Error reading file');
+ 
     }
     res.send(data);
   });
 });
-
-
+ 
+ 
 //Edit user
 app.put("/edit-user/:index", (req, res) => {
   const index = req.params.index;
@@ -67,15 +67,42 @@ app.put("/edit-user/:index", (req, res) => {
   });
 });
  
-
-
-
-
-
-
-
-
-
+//Delete user
+app.delete("/delete-user/:index", (req, res) => {
+  const index = req.params.index;
+ 
+  fs.readFile("data.json", "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).send("Error reading file");
+    }
+ 
+    const users = JSON.parse(data);
+ 
+    if (users[index] === undefined) {
+      return res.status(404).send("User not found");
+    }
+ 
+    users.splice(index, 1);
+ 
+    fs.writeFile("data.json", JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        return res.status(500).send("Error writing file");
+      }
+      res.send("User deleted successfully!");
+    });
+ 
+  });
+});
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 //Add student
 // app.post('/add-student', (req, res) => {
 //   const newStudent = req.body;
@@ -104,7 +131,7 @@ app.put("/edit-user/:index", (req, res) => {
 //   });
 // });
  
-
+ 
 //Add student
 app.post('/add-student', (req, res) => {
   const newStudent = req.body;
@@ -123,7 +150,7 @@ app.post('/add-student', (req, res) => {
   });
 });
  
-
+ 
 //Fetch Students
 app.get('/students', (req, res) => {
   fs.readFile('student.json', 'utf8', (err, data) => {
@@ -140,20 +167,20 @@ app.get('/students', (req, res) => {
 app.put("/edit-students/:index", (req, res) => {
   const index = parseInt(req.params.index);
   const updatedUser = req.body;
-
+ 
   fs.readFile("student.json", "utf8", (err, data) => {
     if (err) {
       return res.status(500).send("Error reading file");
     }
-
+ 
     const users = JSON.parse(data);
-
+ 
     if(users[index] === undefined) {  
       return res.status(404).send("Student not found");
-    } 
-
+    }
+ 
     users[index] = updatedUser;
-
+ 
     fs.writeFile("student.json", JSON.stringify(users, null, 2), (err) => {
       if (err) {
         return res.status(500).send("Error writing file");
@@ -162,11 +189,35 @@ app.put("/edit-students/:index", (req, res) => {
     });
   })
 });
-
-
-
-
-
+ 
+ 
+//Delete student
+app.delete("/delete-student/:index", (req, res) => {
+  const index = parseInt(req.params.index);
+ 
+  fs.readFile("student.json", "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).send("Error reading file");
+    }
+    const users = JSON.parse(data);
+    if(users[index] === undefined) {
+      return res.status(404).send("Student not found");
+    }
+    users.splice(index, 1);
+    fs.writeFile("student.json", JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        return res.status(500).send("Error writing file");
+      }
+      res.send("Student deleted successfully");
+     });
+  })
+});
+ 
+ 
+ 
+ 
+ 
+ 
 // Route with URL parameter
 app.get('/user/:name', (req, res) => {
 const name = req.params.name;
@@ -197,6 +248,7 @@ const port = 1337;
 app.listen(port, () => {
  console.log(`Server is running on ${port}`);
 });
+ 
  
  
  

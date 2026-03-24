@@ -13,7 +13,7 @@ function AddStudent () {
     const [yearLevel, setYearLevel] = useState('');
     const [users, setUsers] = useState([]);  // replaced/add users state
     const [editIndex, setEditIndex] = useState(null) // Track which student is being edited (edit)
-
+ 
         // Fetch students from the server
         function fetchStudents(){
         axios.get('http://localhost:1337/students')
@@ -25,12 +25,12 @@ function AddStudent () {
             console.error(error);
         });
         }
-
+ 
     // Fetch students when the component mounts
     useEffect(() => {
       fetchStudents();
     }, []);
-
+ 
     const handleAddStudent = async () => {
         try {
             const student = {
@@ -55,11 +55,11 @@ function AddStudent () {
             alert('Error adding student');
         }
     }
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
     //edit student
     function handleEdit(user, index) {
       setIdNumber(user.idNumber);
@@ -69,9 +69,9 @@ function AddStudent () {
         setCourse(user.course);
         setYearLevel(user.yearLevel); // Set the index of the student being edited
         setEditIndex(index);
-
+ 
     }
-
+ 
     async function handleUpdateStudent() {
       try {
         await axios.put(`http://localhost:1337/edit-students/${editIndex}`, {
@@ -96,11 +96,30 @@ function AddStudent () {
         alert('Error updating student');
       }
     };
-
-
-
-
-
+ 
+    //Delete student
+        async function handleDelete(user, index) {
+ 
+            const confirmDelete = window.confirm(`Are you sure you want to delete ${user.firstName}?`);
+            if (!confirmDelete) {
+                return; // Exit if the user cancels the deletion
+            }
+ 
+            try {
+                await axios.delete(`http://localhost:1337/delete-student/${index}`);
+                alert('Student deleted successfully');
+                fetchStudents(); // refresh list
+            }
+            catch (error) {
+                console.error(error);
+                alert('Error deleting student');
+            }
+        }
+ 
+ 
+ 
+ 
+ 
         return (
             <div className="AddStudent-container">
                 <div className="form-wrapper">
@@ -114,7 +133,7 @@ function AddStudent () {
                         <TextField id="year-level" label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} />
                         {editIndex === null ? (
                             <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
-                        ) : 
+                        ) :
                             <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
                         }
                     </div>
@@ -139,9 +158,15 @@ function AddStudent () {
                                     <TableCell>{user.middleName}</TableCell>
                                     <TableCell>{user.course}</TableCell>
                                     <TableCell>{user.yearLevel}</TableCell>
+ 
                                     <TableCell>
                                         <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
                                     </TableCell>
+ 
+                                      <TableCell>
+                                         <Button variant="outlined" color="primary" onClick={() => handleDelete(user, index)}>Delete</Button>
+                                     </TableCell>
+ 
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -151,3 +176,5 @@ function AddStudent () {
         )
 }
 export default AddStudent;
+ 
+ 
