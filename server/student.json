@@ -1,11 +1,19 @@
 [
   {
-    "idNumber": "67",
-    "firstName": "chester",
-    "lastName": "bading",
-    "middleName": "nathan",
-    "course": "BSUPOT",
-    "yearLevel": "11"
+    "idNumber": "8",
+    "firstName": "kk",
+    "lastName": "kjljkl",
+    "middleName": "jkljkl",
+    "course": "jkljkl",
+    "yearLevel": "10"
+  },
+  {
+    "idNumber": "3",
+    "firstName": "hjkhj",
+    "lastName": "hjkhj",
+    "middleName": "khjkhj",
+    "course": "khjk",
+    "yearLevel": "3"
   },
   {
     "idNumber": "41273230",
@@ -40,60 +48,49 @@
     "yearLevel": "123123"
   },
   {
-    "idNumber": "6",
+    "idNumber": "3",
     "firstName": "Dwight",
     "lastName": "Somera",
     "middleName": "Marquez",
     "course": "BSIT",
-    "yearLevel": "3"
+    "yearLevel": "3",
+    "photoPath": "pessi-1775536043093-493424093.jpg"
   },
   {
-    "idNumber": "12344",
-    "firstName": "dwight",
-    "lastName": "somrea",
-    "middleName": "marquez",
-    "course": "bsit",
-    "yearLevel": "3"
-  },
-  {
-    "idNumber": "3",
-    "firstName": "vjhbvj",
-    "lastName": "jghj",
-    "middleName": "hjghj",
-    "course": "ghjgj",
-    "yearLevel": "4"
-  },
-  {
-    "idNumber": "999999",
-    "firstName": "benson",
-    "lastName": "marzan ",
-    "middleName": "marquez",
+    "idNumber": "48374839",
+    "firstName": "Troy",
+    "lastName": "James",
+    "middleName": "Urbino",
     "course": "BSCS",
-    "yearLevel": "3"
+    "yearLevel": "3",
+    "photoPath": "tukam-1775536053893-992869489.jpg"
   },
   {
-    "idNumber": "4",
-    "firstName": "ljkl",
-    "lastName": "jkljkl",
-    "middleName": "jkljkl",
-    "course": "jkljkl",
-    "yearLevel": "2"
+    "idNumber": "45789789",
+    "firstName": "Austine",
+    "lastName": "Ilarde",
+    "middleName": "Soncuan",
+    "course": "BSIT",
+    "yearLevel": "3",
+    "photoPath": "dafoe-1775536082012-589026086.jpg"
   },
   {
-    "idNumber": "3",
-    "firstName": "vvvv",
-    "lastName": "vvv",
-    "middleName": "vvv",
-    "course": "vvv",
-    "yearLevel": "3"
+    "idNumber": "43321678",
+    "firstName": "Absalon",
+    "lastName": "JoAaron",
+    "middleName": "John-Doe",
+    "course": "BSEE",
+    "yearLevel": "4",
+    "photoPath": "blackstudent-1775536245717-629981080.jpg"
   },
   {
-    "idNumber": "3",
-    "firstName": "yutyutyty",
-    "lastName": "hfghghgh",
-    "middleName": "hghg",
-    "course": "hghfghfg",
-    "yearLevel": "3"
+    "idNumber": "43217823",
+    "firstName": "Abdul",
+    "lastName": "Du-lilah",
+    "middleName": "Amhed",
+    "course": "BSCPE",
+    "yearLevel": "5",
+    "photoPath": "hello-1775534832368-486396729.jpg"
   },
   {
     "idNumber": "43858374",
@@ -101,22 +98,6 @@
     "lastName": "Marzan",
     "middleName": "L",
     "course": "BSIT ",
-    "yearLevel": "3"
-  },
-  {
-    "idNumber": "4",
-    "firstName": "fdgfdg",
-    "lastName": "dgfdfg",
-    "middleName": "dfgdfg",
-    "course": "dfgdfg",
-    "yearLevel": "545"
-  },
-  {
-    "idNumber": "69",
-    "firstName": "Ambatukam",
-    "lastName": "Buss",
-    "middleName": "BUSSING",
-    "course": "BSIT",
     "yearLevel": "3"
   }
 ]

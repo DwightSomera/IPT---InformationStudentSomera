@@ -1,12 +1,16 @@
 const express = require('express');
- 
+
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const upload = require('./middleware/upload');
  
 const app = express();
  
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
  
  
 //Add user
@@ -37,8 +41,8 @@ app.get('/users', (req, res) => {
     res.send(data);
   });
 });
- 
- 
+
+
 //Edit user
 app.put("/edit-user/:index", (req, res) => {
   const index = req.params.index;
@@ -94,15 +98,15 @@ app.delete("/delete-user/:index", (req, res) => {
   });
 });
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
 //Add student
 // app.post('/add-student', (req, res) => {
 //   const newStudent = req.body;
@@ -131,7 +135,7 @@ app.delete("/delete-user/:index", (req, res) => {
 //   });
 // });
  
- 
+
 //Add student
 app.post('/add-student', (req, res) => {
   const newStudent = req.body;
@@ -189,35 +193,11 @@ app.put("/edit-students/:index", (req, res) => {
     });
   })
 });
- 
- 
-//Delete student
-app.delete("/delete-student/:index", (req, res) => {
-  const index = parseInt(req.params.index);
- 
-  fs.readFile("student.json", "utf8", (err, data) => {
-    if (err) {
-      return res.status(500).send("Error reading file");
-    }
-    const users = JSON.parse(data);
-    if(users[index] === undefined) {
-      return res.status(404).send("Student not found");
-    }
-    users.splice(index, 1);
-    fs.writeFile("student.json", JSON.stringify(users, null, 2), (err) => {
-      if (err) {
-        return res.status(500).send("Error writing file");
-      }
-      res.send("Student deleted successfully");
-     });
-  })
-});
- 
- 
- 
- 
- 
- 
+
+
+
+
+
 // Route with URL parameter
 app.get('/user/:name', (req, res) => {
 const name = req.params.name;
@@ -242,6 +222,10 @@ res.send(`You searched for: ${query}`);
 });
  
  
+
+
+
+
 // Start the server
 const port = 1337;
  
