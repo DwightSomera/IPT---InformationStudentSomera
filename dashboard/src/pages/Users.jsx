@@ -15,7 +15,7 @@ function Users() {
 //Fetch users from the server
 function fetchUsers() {
     axios
-    .get('http://localhost:1337/users')
+    .get('http://localhost:1337/users-db')
     .then(response => { 
       setUsers(response.data);
       console.log(response.data);
@@ -35,26 +35,24 @@ useEffect(() => {
 
 
 
-      async function handleAddUser() {
-        try {
-          await axios.post('http://localhost:1337/add-user', {
-            name: name,
-            email: email,
-            password: password
-          });
-
-          alert('User added successfully')
-          fetchUsers(); // Refresh the user list after adding a new user
-          setName('');
-          setEmail('');
-          setPassword('');
-          value = '';
-
-        }catch (error) {
-            console.error(error);
-            alert('Error adding user');
-        }
-      }
+        async function handleAddUser() {
+    try {
+ 
+      await axios.post("http://localhost:1337/add-user-db", {
+        name: name,
+        email: email,
+        password: password,
+      });
+ 
+      alert("User added!");
+ 
+      fetchUsers();
+      resetForm();
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 
 

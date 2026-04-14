@@ -4,14 +4,56 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const upload = require('./middleware/upload');
- 
+
+//calling mongoose
+const mongoose = require('mongoose');
+const User = require('./model/user.model');
+
 const app = express();
+
 
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
  
+
+
+//db connection of mongoose
+mongoose 
+  .connect("mongodb://127.0.0.1:27017/SIS-db")
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Connection error:", err));
+
+
+
  
+//add user to database
+app.post('/add-user-db', async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const newUser = new User({ name, email, password });
+    await newUser.save();
+    res.status(201).json({ message: 'User added successfully', user: newUser });
+  } catch (error) {
+    console.error('Error adding user:', error);
+    res.status(500).json({ message: 'Error adding user', error: error. Message });
+  }
+});
+
+//view users from db
+app.get('/users-db', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
+  }
+});
+
+ 
+
+
 //Add user
 app.post('/add-user', (req, res) => {
   const newUser = req.body;

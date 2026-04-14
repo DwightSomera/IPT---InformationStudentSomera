@@ -6,7 +6,7 @@
     "middleName": "Marquez",
     "course": "BSIT",
     "yearLevel": "3",
-    "photoPath": "pessi-1775536043093-493424093.jpg"
+    "photoPath": "caucasian student 3-1776134676094-887936378.jpg"
   },
   {
     "idNumber": "48374839",
@@ -24,7 +24,7 @@
     "middleName": "Soncuan",
     "course": "BSIT",
     "yearLevel": "3",
-    "photoPath": "dafoe-1775536082012-589026086.jpg"
+    "photoPath": "white student 2-1776134686469-73753194.jpg"
   },
   {
     "idNumber": "43321678",
@@ -42,7 +42,7 @@
     "middleName": "Amhed",
     "course": "BSCPE",
     "yearLevel": "5",
-    "photoPath": "hello-1775534832368-486396729.jpg"
+    "photoPath": "images-1776134781199-11373779.jpg"
   },
   {
     "idNumber": "45678932",
@@ -52,5 +52,14 @@
     "course": "BSLIS",
     "yearLevel": "1",
     "photoPath": "download-1775536467630-164521409.jpg"
+  },
+  {
+    "idNumber": "43567898",
+    "firstName": "Cleversib",
+    "lastName": "Marzan",
+    "middleName": "Labuto",
+    "course": "BSCPE",
+    "yearLevel": "5",
+    "photoPath": "white student 2-1776394791273-381551163.jpg"
   }
 ]

@@ -12,6 +12,9 @@ const getPhotoUrl = (photoPath) => {
 };
  
 function AddStudent () {
+    const MAX_ID_LENGTH = 12;
+    const MAX_NAME_LENGTH = 50;
+
     const [idNumber, setIdNumber] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -44,12 +47,12 @@ function AddStudent () {
 
     // Filter input to only allow letters and hyphens
     const filterNameInput = (value) => {
-        return value.replace(/[^a-zA-Z\-]/g, '');
+        return value.replace(/[^a-zA-Z\-]/g, '').slice(0, MAX_NAME_LENGTH);
     };
 
     // Filter input to only allow numeric digits
     const filterIdInput = (value) => {
-        return value.replace(/[^0-9]/g, '');
+        return value.replace(/[^0-9]/g, '').slice(0, MAX_ID_LENGTH);
     };
 
     // Handle photo file selection
@@ -87,6 +90,8 @@ function AddStudent () {
 
         if (!idNumber) {
             newErrors.idNumber = 'ID Number is required';
+        } else if (idNumber.length > MAX_ID_LENGTH) {
+            newErrors.idNumber = `ID Number cannot exceed ${MAX_ID_LENGTH} digits`;
         } else if (parseInt(idNumber) <= 0) {
             newErrors.idNumber = 'ID Number must be positive';
         } else if (!isIdUnique(idNumber, editIndex)) {
@@ -95,17 +100,23 @@ function AddStudent () {
 
         if (!firstName) {
             newErrors.firstName = 'First Name is required';
+        } else if (firstName.length > MAX_NAME_LENGTH) {
+            newErrors.firstName = `First Name cannot exceed ${MAX_NAME_LENGTH} characters`;
         } else if (!isValidName(firstName)) {
             newErrors.firstName = 'First Name can only contain letters and hyphens (-)';
         }
 
         if (!lastName) {
             newErrors.lastName = 'Last Name is required';
+        } else if (lastName.length > MAX_NAME_LENGTH) {
+            newErrors.lastName = `Last Name cannot exceed ${MAX_NAME_LENGTH} characters`;
         } else if (!isValidName(lastName)) {
             newErrors.lastName = 'Last Name can only contain letters and hyphens (-)';
         }
 
-        if (middleName && !isValidName(middleName)) {
+        if (middleName && middleName.length > MAX_NAME_LENGTH) {
+            newErrors.middleName = `Middle Name cannot exceed ${MAX_NAME_LENGTH} characters`;
+        } else if (middleName && !isValidName(middleName)) {
             newErrors.middleName = 'Middle Name can only contain letters and hyphens (-)';
         }
 
@@ -300,7 +311,7 @@ function AddStudent () {
                             type="text" 
                             value={idNumber} 
                             onChange={(e) => setIdNumber(filterIdInput(e.target.value))} 
-                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: MAX_ID_LENGTH }}
                             error={!!errors.idNumber}
                             helperText={errors.idNumber}
                         />
@@ -311,6 +322,7 @@ function AddStudent () {
                             type="text" 
                             value={firstName} 
                             onChange={(e) => setFirstName(filterNameInput(e.target.value))} 
+                            inputProps={{ maxLength: MAX_NAME_LENGTH }}
                             error={!!errors.firstName}
                             helperText={errors.firstName}
                         />
@@ -321,6 +333,7 @@ function AddStudent () {
                             type="text" 
                             value={lastName} 
                             onChange={(e) => setLastName(filterNameInput(e.target.value))} 
+                            inputProps={{ maxLength: MAX_NAME_LENGTH }}
                             error={!!errors.lastName}
                             helperText={errors.lastName}
                         />
@@ -331,6 +344,7 @@ function AddStudent () {
                             type="text" 
                             value={middleName} 
                             onChange={(e) => setMiddleName(filterNameInput(e.target.value))} 
+                            inputProps={{ maxLength: MAX_NAME_LENGTH }}
                             error={!!errors.middleName}
                             helperText={errors.middleName}
                         />
