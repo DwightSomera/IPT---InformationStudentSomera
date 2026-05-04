@@ -102,6 +102,7 @@ useEffect(() => {
           <Button variant = "contained" color="primary" onClick={handleAddUser}>Add User</Button>
         ) : (
         <Button variant = "contained" color="primary" onClick={handleUpdateUser}>Update User</Button>
+        )
       }
 
 
@@ -132,6 +133,7 @@ useEffect(() => {
       </div>  
     </div>  
   )
+
 }
  
 export default Users
