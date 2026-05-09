@@ -22,14 +22,14 @@ function AddStudent () {
     const [course, setCourse] = useState('');
     const [yearLevel, setYearLevel] = useState('');
     const [users, setUsers] = useState([]);  // replaced/add users state
-    const [editIndex, setEditIndex] = useState(null) // Track which student is being edited (edit)
+    const [editStudentId, setEditStudentId] = useState(null) // Track which student is being edited (edit)
     const [errors, setErrors] = useState({});
     const [studentPhoto, setStudentPhoto] = useState(null);
     const [existingPhotoPath, setExistingPhotoPath] = useState('');
 
         // Fetch students from the server
         function fetchStudents(){
-        axios.get('http://localhost:1337/students')
+        axios.get('http://localhost:1337/students-db')
         .then(response => {
             setUsers(response.data);
             console.log(response.data);
@@ -41,13 +41,13 @@ function AddStudent () {
 
     // Validation function for name fields (letters and "-" only)
     const isValidName = (name) => {
-        const nameRegex = /^[a-zA-Z\-]*$/;
+        const nameRegex = /^[a-zA-Z-]*$/;
         return nameRegex.test(name);
     };
 
     // Filter input to only allow letters and hyphens
     const filterNameInput = (value) => {
-        return value.replace(/[^a-zA-Z\-]/g, '').slice(0, MAX_NAME_LENGTH);
+        return value.replace(/[^a-zA-Z-]/g, '').slice(0, MAX_NAME_LENGTH);
     };
 
     // Filter input to only allow numeric digits
@@ -61,22 +61,22 @@ function AddStudent () {
     };
 
     // Check if ID is unique
-    const isIdUnique = (id, currentIndex = null) => {
+    const isIdUnique = (id, currentStudentId = null) => {
         const normalizedId = id.toString();
-        return !users.some((user, idx) => {
+        return !users.some((user) => {
             const userId = user.idNumber?.toString();
-            return userId === normalizedId && idx !== currentIndex;
+            return userId === normalizedId && user._id !== currentStudentId;
         });
     };
 
     // Check if full name is unique
-    const isFullNameUnique = (first, last, middle, currentIndex = null) => {
+    const isFullNameUnique = (first, last, middle, currentStudentId = null) => {
         const normalizedFirst = first.trim().toLowerCase();
         const normalizedLast = last.trim().toLowerCase();
         const normalizedMiddle = (middle || '').trim().toLowerCase();
 
-        return !users.some((user, idx) => {
-            if (idx === currentIndex) return false;
+        return !users.some((user) => {
+            if (user._id === currentStudentId) return false;
             const userFirst = (user.firstName || '').trim().toLowerCase();
             const userLast = (user.lastName || '').trim().toLowerCase();
             const userMiddle = (user.middleName || '').trim().toLowerCase();
@@ -94,7 +94,7 @@ function AddStudent () {
             newErrors.idNumber = `ID Number cannot exceed ${MAX_ID_LENGTH} digits`;
         } else if (parseInt(idNumber) <= 0) {
             newErrors.idNumber = 'ID Number must be positive';
-        } else if (!isIdUnique(idNumber, editIndex)) {
+        } else if (!isIdUnique(idNumber, editStudentId)) {
             newErrors.idNumber = 'ID Number already exists';
         }
 
@@ -121,7 +121,7 @@ function AddStudent () {
         }
 
         if (!newErrors.firstName && !newErrors.lastName && !newErrors.middleName) {
-            if (!isFullNameUnique(firstName, lastName, middleName, editIndex)) {
+            if (!isFullNameUnique(firstName, lastName, middleName, editStudentId)) {
                 newErrors.firstName = 'This student name already exists';
                 newErrors.lastName = 'This student name already exists';
                 if (middleName) {
@@ -190,7 +190,7 @@ function AddStudent () {
                 photoPath: photoPath
             };
             
-            await axios.post('http://localhost:1337/add-student', student);
+            await axios.post('http://localhost:1337/add-student-db', student);
             alert('Student added successfully');
             fetchStudents(); // refresh list
             
@@ -215,14 +215,14 @@ function AddStudent () {
 
 
     //Edit or Update Student
-    function handleEdit(user, index) {
+        function handleEdit(user) {
       setIdNumber(user.idNumber);
       setFirstName(user.firstName);
         setLastName(user.lastName);
         setMiddleName(user.middleName);
         setCourse(user.course);
         setYearLevel(user.yearLevel); // Set the index of the student being edited
-        setEditIndex(index);
+            setEditStudentId(user._id);
         setStudentPhoto(null);
         setExistingPhotoPath(user.photoPath || '');
         setErrors({});
@@ -249,7 +249,7 @@ function AddStudent () {
           }
         }
 
-        await axios.put(`http://localhost:1337/edit-students/${editIndex}`, {
+                await axios.put(`http://localhost:1337/edit-students-db/${editStudentId}`, {
           idNumber: idNumber,
           firstName: firstName,
           lastName: lastName,
@@ -268,7 +268,7 @@ function AddStudent () {
         setYearLevel('');
         setStudentPhoto(null);
         setExistingPhotoPath('');
-        setEditIndex(null);
+                setEditStudentId(null);
         setErrors({});
       } catch (error) {
         console.error(error);
@@ -277,7 +277,7 @@ function AddStudent () {
     };
 
     //Delete student
-        async function handleDelete(user, index) {
+        async function handleDelete(user) {
 
             const confirmDelete = window.confirm(`Are you sure you want to delete ${user.firstName}?`);
             if (!confirmDelete) {
@@ -285,9 +285,22 @@ function AddStudent () {
             }
 
             try {
-                await axios.delete(`http://localhost:1337/delete-student/${index}`);
+                await axios.delete(`http://localhost:1337/delete-student-db/${user._id}`);
                 alert('Student deleted successfully');
                 fetchStudents(); // refresh list
+
+                if (editStudentId === user._id) {
+                    setIdNumber('');
+                    setFirstName('');
+                    setLastName('');
+                    setMiddleName('');
+                    setCourse('');
+                    setYearLevel('');
+                    setStudentPhoto(null);
+                    setExistingPhotoPath('');
+                    setEditStudentId(null);
+                    setErrors({});
+                }
             }
             catch (error) {
                 console.error(error);
@@ -427,7 +440,7 @@ function AddStudent () {
                             </Select>
                             {errors.yearLevel && <FormHelperText>{errors.yearLevel}</FormHelperText>}
                         </FormControl>
-                        {editIndex === null ? (
+                        {editStudentId === null ? (
                             <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
                         ) : 
                             <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
@@ -447,8 +460,8 @@ function AddStudent () {
                                 <TableCell>Course</TableCell>
                                 <TableCell>Year Level</TableCell>
                             </TableRow>
-                            {users.map((user, index) => (
-                                <TableRow key={index}>
+                            {users.map((user) => (
+                                <TableRow key={user._id}>
                                     <TableCell>{user.idNumber}</TableCell>
                                     <TableCell>
                                         {user.photoPath ? (
@@ -468,11 +481,11 @@ function AddStudent () {
                                     <TableCell>{user.yearLevel}</TableCell>
 
                                     <TableCell>
-                                        <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
+                                        <Button variant="outlined" color="primary" onClick={() => handleEdit(user)}>Edit</Button>
                                     </TableCell>
 
                                       <TableCell>
-                                         <Button variant="outlined" color="primary" onClick={() => handleDelete(user, index)}>Delete</Button>
+                                         <Button variant="outlined" color="primary" onClick={() => handleDelete(user)}>Delete</Button>
                                      </TableCell>
 
                                 </TableRow>

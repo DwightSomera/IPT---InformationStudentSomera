@@ -7,40 +7,42 @@
 .main-content {
   flex: 1;
   padding: 20px;
+  margin-left: 260px; /* account for fixed sidebar (wider gap) */
 }
  
 .sidebar {
-  width: 250px;
-  background-color: white;  
-  color: #333;  
-  padding: 20px;
-  border-right: 1px solid #ddd;  
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);  
+  width: 220px;
+  background-color: var(--primary);
+  color: #fff;
+  padding: 34px 22px;
+  border-right: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 2px 0 12px rgba(15,23,42,0.06);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
- 
+
 .sidebar h2 {
-  margin-top: 0;
-  color: #2c3e50;  
+  margin-top: 6px;
+  color: #fff;
+  font-size: 1.6rem;
+  letter-spacing: 0.6px;
+  font-weight: 900;
+  font-family: 'Georgia', serif;
 }
- 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
- 
-.sidebar li {
-  margin: 10px 0;
-}
- 
-.sidebar a {
-  color: #2c3e50;
-  text-decoration: none;
-  font-weight: 500;
-}
- 
-.sidebar a:hover {
-  color: #3498db;  
-}
+
+.sidebar ul { list-style: none; padding: 0; margin-top: 28px; }
+.sidebar li { margin: 14px 0; }
+
+.sidebar .nav-link { color: #fff; text-decoration: none; font-weight: 700; display: inline-block; padding: 8px 12px; border-radius: 8px; font-size: 14px; opacity: 0.95; }
+.sidebar .nav-link:hover { background: rgba(255,255,255,0.04); }
+.sidebar .nav-link.active { background: rgba(255,255,255,0.06); }
+
+.sidebar .logo-sub { font-size: 0.85rem; opacity: 0.95; margin-top: 6px; }
+
+/* Make room for fixed sidebar */
+.app-with-sidebar { margin-left: 220px; }
  
  
  
