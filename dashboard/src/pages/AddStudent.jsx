@@ -1,14 +1,12 @@
 import './AddStudent.css';
 import axios from 'axios'
 import { useState } from 'react'
-import { TextField, Button, TableCell, TableRow, TableBody, Table, Select, MenuItem, FormControl, InputLabel, FormHelperText, Box, Typography } from '@mui/material'
+import { Avatar, Box, Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import { useEffect } from 'react';
 
 const getPhotoUrl = (photoPath) => {
-  if (!photoPath) return null;
-  return photoPath.startsWith('uploads/')
-    ? `http://localhost:1337/${photoPath}`
-    : `http://localhost:1337/uploads/${photoPath}`;
+    if (!photoPath) return '';
+    return photoPath.startsWith('uploads/') ? `http://localhost:1337/${photoPath}` : `http://localhost:1337/uploads/${photoPath}`;
 };
  
 function AddStudent () {
@@ -43,16 +41,6 @@ function AddStudent () {
     const isValidName = (name) => {
         const nameRegex = /^[a-zA-Z-]*$/;
         return nameRegex.test(name);
-    };
-
-    // Filter input to only allow letters and hyphens
-    const filterNameInput = (value) => {
-        return value.replace(/[^a-zA-Z-]/g, '').slice(0, MAX_NAME_LENGTH);
-    };
-
-    // Filter input to only allow numeric digits
-    const filterIdInput = (value) => {
-        return value.replace(/[^0-9]/g, '').slice(0, MAX_ID_LENGTH);
     };
 
     // Handle photo file selection
@@ -138,7 +126,7 @@ function AddStudent () {
             newErrors.yearLevel = 'Year Level is required';
         }
 
-        if (!studentPhoto && !existingPhotoPath) {
+        if (!editStudentId && !studentPhoto) {
             newErrors.studentPhoto = 'Student photo is required';
         }
 
@@ -276,64 +264,118 @@ function AddStudent () {
       }
     };
 
+    async function handleDeleteStudent(studentId) {
+      if (window.confirm('Are you sure you want to delete this student?')) {
+        try {
+          await axios.delete(`http://localhost:1337/delete-student-db/${studentId}`);
+          alert('Student deleted successfully');
+          fetchStudents(); // refresh list
+        } catch (error) {
+          console.error(error);
+          alert('Error deleting student');
+        }
+      }
+    };
+
 
 
 
 
     return (
-    <div className="home-container">
-        <div className="panel form-wrapper">
-            <h1>Add Student</h1>
-            <div className="form">
-                    <TextField id="id-number" label="ID Number" variant="outlined" type="number" value={idNumber} onChange={(e) => setIdNumber(e.target.value)} />
-                    <TextField id="first-name" label="First Name" variant="outlined"  type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    <TextField id="last-name" label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <TextField id="middle-name" label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
-                    <TextField id="course" label="Course" variant="outlined" type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
-                    <TextField id="year-level" label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} />
+    <Box sx={{ display: 'flex', gap: 3, p: 3, minHeight: '100vh', bgcolor: '#f3f6fb' }}>
+        <Paper elevation={3} sx={{ flex: '0 0 420px', p: 3, borderRadius: 3 }}>
+            <Stack spacing={2}>
+                <Typography variant="h4" fontWeight={700}>Add Student</Typography>
+                <TextField label="ID Number" variant="outlined" type="number" value={idNumber} onChange={(e) => setIdNumber(e.target.value)} fullWidth />
+                <TextField label="First Name" variant="outlined" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} fullWidth />
+                <TextField label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} fullWidth />
+                <TextField label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} fullWidth />
+                <TextField label="Course" variant="outlined" type="text" value={course} onChange={(e) => setCourse(e.target.value)} fullWidth />
+                <TextField label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} fullWidth />
+                
+                <Button component="label" variant="outlined">
+                    Choose Photo
+                    <input hidden type="file" accept="image/*" onChange={handlePhotoChange} />
+                </Button>
 
+                {(studentPhoto || existingPhotoPath) && (
+                    <Stack direction="row" spacing={2} alignItems="center">
+                        <Avatar src={studentPhoto ? URL.createObjectURL(studentPhoto) : getPhotoUrl(existingPhotoPath)} sx={{ width: 72, height: 72 }} />
+                        <Typography variant="body2" color="text.secondary">Photo preview</Typography>
+                    </Stack>
+                )}
 
-                    {editIndex === null ? (
-                        <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
-                    ) : 
-                        <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
-                    }
-  
-                    
-           
-           <h2>Students List</h2>
-           <Table>  
-            <TableBody>
-                <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>First Name</TableCell>
-                    <TableCell>Last Name</TableCell>
-                    <TableCell>Middle Name</TableCell>
-                    <TableCell>Course</TableCell>
-                    <TableCell>Year Level</TableCell>
-                </TableRow>
-                     {users.map((user, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{user.idNumber}</TableCell>
-                            <TableCell>{user.firstName}</TableCell>  
-                            <TableCell>{user.lastName}</TableCell>
-                            <TableCell>{user.middleName}</TableCell>
-                            <TableCell>{user.course}</TableCell>
-                            <TableCell>{user.yearLevel}</TableCell>
+                {errors.studentPhoto && <Typography color="error" variant="body2">{errors.studentPhoto}</Typography>}
+                {errors.idNumber && <Typography color="error" variant="body2">{errors.idNumber}</Typography>}
+                {errors.firstName && <Typography color="error" variant="body2">{errors.firstName}</Typography>}
+                {errors.lastName && <Typography color="error" variant="body2">{errors.lastName}</Typography>}
+                {errors.middleName && <Typography color="error" variant="body2">{errors.middleName}</Typography>}
+                {errors.course && <Typography color="error" variant="body2">{errors.course}</Typography>}
+                {errors.yearLevel && <Typography color="error" variant="body2">{errors.yearLevel}</Typography>}
 
-                            <TableCell>
-                                <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
-                            </TableCell>
-                                
+                <Stack direction="row" spacing={1}>
+                    {editStudentId === null ? (
+                        <Button variant="contained" onClick={handleAddStudent} fullWidth>Add Student</Button>
+                    ) : (
+                        <>
+                            <Button variant="contained" onClick={handleUpdateStudent} fullWidth>Update Student</Button>
+                            <Button variant="outlined" color="secondary" onClick={() => {
+                                setIdNumber('');
+                                setFirstName('');
+                                setLastName('');
+                                setMiddleName('');
+                                setCourse('');
+                                setYearLevel('');
+                                setStudentPhoto(null);
+                                setExistingPhotoPath('');
+                                setEditStudentId(null);
+                                setErrors({});
+                            }} fullWidth>Cancel</Button>
+                        </>
+                    )}
+                </Stack>
+            </Stack>
+        </Paper>
+
+        <Paper elevation={3} sx={{ flex: 1, p: 3, borderRadius: 3, overflow: 'hidden' }}>
+            <Typography variant="h5" fontWeight={700} mb={2}>Students List</Typography>
+            <TableContainer sx={{ maxHeight: 'calc(100vh - 120px)' }}>
+                <Table stickyHeader size="small">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 700 }}>Photo</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>ID</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>First Name</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>Last Name</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>Middle Name</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>Course</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>Year Level</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }} align="center">Actions</TableCell>
                         </TableRow>
-                     ))}
-
-            </TableBody>
-           </Table>
-      
-            </div>
-        </div>
-    </div>
+                    </TableHead>
+                    <TableBody>
+                        {users.map((user, index) => (
+                            <TableRow key={index} hover>
+                                <TableCell>
+                                    <Avatar src={getPhotoUrl(user.photoPath)} alt={user.firstName} sx={{ width: 56, height: 56 }} />
+                                </TableCell>
+                                <TableCell>{user.idNumber}</TableCell>
+                                <TableCell>{user.firstName}</TableCell>  
+                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>{user.middleName}</TableCell>
+                                <TableCell>{user.course}</TableCell>
+                                <TableCell>{user.yearLevel}</TableCell>
+                                <TableCell align="center">
+                                    <Button variant="outlined" size="small" onClick={() => handleEdit(user, index)} sx={{ mr: 1 }}>Edit</Button>
+                                    <Button variant="outlined" size="small" color="error" onClick={() => handleDeleteStudent(user._id)}>Delete</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Paper>
+    </Box>
     )
 }
 export default AddStudent;

@@ -230,6 +230,23 @@ app.post('/upload-student-photo', upload.single('studentPhoto'), (req, res) => {
   });
 });
 
+// Upload user photo
+app.post('/upload-user-photo', upload.single('userPhoto'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: 'No file uploaded'
+    });
+  }
+
+  res.json({
+    success: true,
+    message: 'Photo uploaded successfully',
+    filename: req.file.filename,
+    filepath: req.file.filename
+  });
+});
+
 // Error handling for upload
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
