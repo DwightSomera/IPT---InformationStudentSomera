@@ -276,225 +276,65 @@ function AddStudent () {
       }
     };
 
-    //Delete student
-        async function handleDelete(user) {
-
-            const confirmDelete = window.confirm(`Are you sure you want to delete ${user.firstName}?`);
-            if (!confirmDelete) {
-                return; // Exit if the user cancels the deletion
-            }
-
-            try {
-                await axios.delete(`http://localhost:1337/delete-student-db/${user._id}`);
-                alert('Student deleted successfully');
-                fetchStudents(); // refresh list
-
-                if (editStudentId === user._id) {
-                    setIdNumber('');
-                    setFirstName('');
-                    setLastName('');
-                    setMiddleName('');
-                    setCourse('');
-                    setYearLevel('');
-                    setStudentPhoto(null);
-                    setExistingPhotoPath('');
-                    setEditStudentId(null);
-                    setErrors({});
-                }
-            }
-            catch (error) {
-                console.error(error);
-                alert('Error deleting student');
-            }
-        }
 
 
 
 
+    return (
+    <div className="home-container">
+        <div className="panel form-wrapper">
+            <h1>Add Student</h1>
+            <div className="form">
+                    <TextField id="id-number" label="ID Number" variant="outlined" type="number" value={idNumber} onChange={(e) => setIdNumber(e.target.value)} />
+                    <TextField id="first-name" label="First Name" variant="outlined"  type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <TextField id="last-name" label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <TextField id="middle-name" label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
+                    <TextField id="course" label="Course" variant="outlined" type="text" value={course} onChange={(e) => setCourse(e.target.value)} />
+                    <TextField id="year-level" label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} />
 
-        return (
-            <div className="AddStudent-container">
-                <div className="form-wrapper">
-                    <h1>Add Student</h1>
-                    <div className="form">
-                        <TextField 
-                            id="id-number" 
-                            label="ID Number" 
-                            variant="outlined" 
-                            type="text" 
-                            value={idNumber} 
-                            onChange={(e) => setIdNumber(filterIdInput(e.target.value))} 
-                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: MAX_ID_LENGTH }}
-                            error={!!errors.idNumber}
-                            helperText={errors.idNumber}
-                        />
-                        <TextField 
-                            id="first-name" 
-                            label="First Name" 
-                            variant="outlined"  
-                            type="text" 
-                            value={firstName} 
-                            onChange={(e) => setFirstName(filterNameInput(e.target.value))} 
-                            inputProps={{ maxLength: MAX_NAME_LENGTH }}
-                            error={!!errors.firstName}
-                            helperText={errors.firstName}
-                        />
-                        <TextField 
-                            id="last-name" 
-                            label="Last Name" 
-                            variant="outlined" 
-                            type="text" 
-                            value={lastName} 
-                            onChange={(e) => setLastName(filterNameInput(e.target.value))} 
-                            inputProps={{ maxLength: MAX_NAME_LENGTH }}
-                            error={!!errors.lastName}
-                            helperText={errors.lastName}
-                        />
-                        <TextField 
-                            id="middle-name" 
-                            label="Middle Name" 
-                            variant="outlined" 
-                            type="text" 
-                            value={middleName} 
-                            onChange={(e) => setMiddleName(filterNameInput(e.target.value))} 
-                            inputProps={{ maxLength: MAX_NAME_LENGTH }}
-                            error={!!errors.middleName}
-                            helperText={errors.middleName}
-                        />
-                        <Box sx={{ marginTop: '8px' }}>
-                            <input 
-                                id="student-photo"
-                                type="file" 
-                                accept="image/jpeg,image/png"
-                                onChange={handlePhotoChange}
-                                style={{ display: 'none' }}
-                            />
-                            <label htmlFor="student-photo" style={{ display: 'block' }}>
-                                <Button
-                                    variant="contained"
-                                    component="span"
-                                    sx={{ marginBottom: '8px', textTransform: 'none', fontSize: '1rem' }}
-                                >
-                                    Choose Photo
-                                </Button>
-                            </label>
-                            {studentPhoto ? (
-                                <Typography variant="body2" sx={{ color: '#4CAF50', margin: '4px 0', fontWeight: '500' }}>
-                                    ✓ {studentPhoto.name}
-                                </Typography>
-                            ) : existingPhotoPath ? (
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
-                                    <img
-                                        src={getPhotoUrl(existingPhotoPath)}
-                                        alt="Current student photo"
-                                        style={{ width: '50px', height: '50px', borderRadius: '6px', objectFit: 'cover', border: '1px solid #ccc' }}
-                                    />
-                                    <Typography variant="body2" sx={{ color: '#333', fontSize: '0.9rem' }}>
-                                        Current photo
-                                    </Typography>
-                                </Box>
-                            ) : null}
-                            {errors.studentPhoto && (
-                                <Typography variant="caption" sx={{ color: '#d32f2f', display: 'block', mt: 1 }}>
-                                    {errors.studentPhoto}
-                                </Typography>
-                            )}
-                        </Box>
-                        <FormControl fullWidth error={!!errors.course}>
-                            <InputLabel id="course-label">Course</InputLabel>
-                            <Select
-                                labelId="course-label"
-                                id="course"
-                                label="Course"
-                                value={course}
-                                onChange={(e) => setCourse(e.target.value)}
-                            >
-                                <MenuItem value="">-- Select a Course --</MenuItem>
-                                <MenuItem value="BSIT">BSIT</MenuItem>
-                                <MenuItem value="BSCS">BSCS</MenuItem>
-                                <MenuItem value="BSLIS">BSLIS</MenuItem>
-                                <MenuItem value="BSMATH">BSMATH</MenuItem>
-                                <MenuItem value="BSCE">BSCE</MenuItem>
-                                <MenuItem value="BSARKI">BSARKI</MenuItem>
-                                <MenuItem value="BSCPE">BSCPE</MenuItem>
-                                <MenuItem value="BSECE">BSECE</MenuItem>
-                                <MenuItem value="BSEE">BSEE</MenuItem>
-                            </Select>
-                            {errors.course && <FormHelperText>{errors.course}</FormHelperText>}
-                        </FormControl>
-                        <FormControl fullWidth error={!!errors.yearLevel}>
-                            <InputLabel id="year-level-label">Year Level</InputLabel>
-                            <Select
-                                labelId="year-level-label"
-                                id="year-level"
-                                label="Year Level"
-                                value={yearLevel}
-                                onChange={(e) => setYearLevel(e.target.value)}
-                            >
-                                <MenuItem value="">-- Select Year Level --</MenuItem>
-                                <MenuItem value="1">1st Year</MenuItem>
-                                <MenuItem value="2">2nd Year</MenuItem>
-                                <MenuItem value="3">3rd Year</MenuItem>
-                                <MenuItem value="4">4th Year</MenuItem>
-                                <MenuItem value="5">5th Year</MenuItem>
-                            </Select>
-                            {errors.yearLevel && <FormHelperText>{errors.yearLevel}</FormHelperText>}
-                        </FormControl>
-                        {editStudentId === null ? (
-                            <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
-                        ) : 
-                            <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
-                        }
-                    </div>
-                </div>
-                <div className="students-list-wrapper">
-                    <h2>Students List</h2>
-                    <Table>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Photo</TableCell>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
-                                <TableCell>Middle Name</TableCell>
-                                <TableCell>Course</TableCell>
-                                <TableCell>Year Level</TableCell>
-                            </TableRow>
-                            {users.map((user) => (
-                                <TableRow key={user._id}>
-                                    <TableCell>{user.idNumber}</TableCell>
-                                    <TableCell>
-                                        {user.photoPath ? (
-                                            <img 
-                                                src={getPhotoUrl(user.photoPath)} 
-                                                alt="Student photo" 
-                                                style={{ width: '50px', height: '50px', borderRadius: '4px', objectFit: 'cover' }}
-                                            />
-                                        ) : (
-                                            <span style={{ color: '#999', fontSize: '12px' }}>No photo</span>
-                                        )}
-                                    </TableCell>
-                                    <TableCell>{user.firstName}</TableCell>
-                                    <TableCell>{user.lastName}</TableCell>
-                                    <TableCell>{user.middleName}</TableCell>
-                                    <TableCell>{user.course}</TableCell>
-                                    <TableCell>{user.yearLevel}</TableCell>
 
-                                    <TableCell>
-                                        <Button variant="outlined" color="primary" onClick={() => handleEdit(user)}>Edit</Button>
-                                    </TableCell>
+                    {editIndex === null ? (
+                        <Button variant = "contained" color="primary" onClick={handleAddStudent}>Add Student</Button>
+                    ) : 
+                        <Button variant = "contained" color="primary" onClick={handleUpdateStudent}>Update Student</Button>
+                    }
+  
+                    
+           
+           <h2>Students List</h2>
+           <Table>  
+            <TableBody>
+                <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                    <TableCell>Middle Name</TableCell>
+                    <TableCell>Course</TableCell>
+                    <TableCell>Year Level</TableCell>
+                </TableRow>
+                     {users.map((user, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{user.idNumber}</TableCell>
+                            <TableCell>{user.firstName}</TableCell>  
+                            <TableCell>{user.lastName}</TableCell>
+                            <TableCell>{user.middleName}</TableCell>
+                            <TableCell>{user.course}</TableCell>
+                            <TableCell>{user.yearLevel}</TableCell>
 
-                                      <TableCell>
-                                         <Button variant="outlined" color="primary" onClick={() => handleDelete(user)}>Delete</Button>
-                                     </TableCell>
+                            <TableCell>
+                                <Button variant="outlined" color="primary" onClick={() => handleEdit(user, index)}>Edit</Button>
+                            </TableCell>
+                                
+                        </TableRow>
+                     ))}
 
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </div>
+            </TableBody>
+           </Table>
+      
             </div>
-        )
+        </div>
+    </div>
+    )
 }
 export default AddStudent;
  
