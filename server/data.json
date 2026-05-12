@@ -1,25 +1,5 @@
 [
   {
-    "name": "cbcvhb",
-    "email": "cvhfchfg",
-    "password": "hfghfgh"
-  },
-  {
-    "name": "cbcvhb",
-    "email": "cvhfchfg",
-    "password": "hfghfgh"
-  },
-  {
-    "name": "dwight",
-    "email": "benson",
-    "password": "aspodfj"
-  },
-  {
-    "name": "adsdas",
-    "email": "dasdasd",
-    "password": "adasd"
-  },
-  {
     "name": "adsdas",
     "email": "dasdasd",
     "password": "adasd"
@@ -73,5 +53,10 @@
     "name": "hjhjhj",
     "email": "asdasd",
     "password": "asdasda"
+  },
+  {
+    "name": "adas",
+    "email": "asdasda",
+    "password": "sdas"
   }
 ]

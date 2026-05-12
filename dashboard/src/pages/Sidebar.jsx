@@ -1,15 +1,14 @@
 import './Sidebar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
  
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h2>Navigation Menu</h2>
+      <h2>SIS</h2>
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/AddStudent">Add Students</Link></li>
-        <li><Link to="/Car">Car</Link></li>
-        <li><Link to="/users">Users</Link></li>
+        <li><NavLink to="/" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Home</NavLink></li>
+        <li><NavLink to="/AddStudent" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Add Students</NavLink></li>
+        <li><NavLink to="/users" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Users</NavLink></li>
       </ul>
     </div>
   );

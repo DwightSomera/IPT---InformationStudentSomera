@@ -1,11 +1,22 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary: #06264a; /* dark blue sidebar */
+  --primary-600: #041a36;
+  --muted: #6b7280;
+  --bg: #f6f4ef; /* warm beige background */
+  --surface: #ffffff;
+  --border: #e9e7e3;
+  --text: #0f1724;
+  --success: #10b981;
+  --danger: #ef4444;
+  --shadow: 0 10px 30px rgba(15,23,18,0.06);
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: var(--text);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,45 +35,71 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2.4rem;
+  line-height: 1.05;
+  color: var(--text);
 }
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--surface);
+  color: var(--primary-600);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.14s ease-in-out;
+  box-shadow: none;
 }
 button:hover {
-  border-color: #646cff;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 3px solid rgba(11,61,145,0.12);
+}
+
+/* Primary variant */
+.btn-primary,
+button[variant="contained"] {
+  background: linear-gradient(180deg, var(--primary), var(--primary-600));
+  color: #fff;
+  border: none;
+}
+
+.btn-outline,
+button[variant="outlined"] {
+  background: var(--surface);
+  color: var(--primary-600);
+  border: 1px solid var(--primary-600);
+}
+
+/* Card wrapper used by pages */
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+/* Page container: center content and constrain width */
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 20px;
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  :root { }
 }
