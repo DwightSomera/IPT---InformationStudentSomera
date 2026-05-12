@@ -10,9 +10,9 @@ import Login from "./pages/Login";
 
 function ProtectedLayout() {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="app-layout">
       <Sidebar />
-      <div style={{ flex: 1 }}>
+      <div className="main-content">
         <Outlet />
       </div>
     </div>

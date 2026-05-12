@@ -33,6 +33,14 @@ function Users() {
     const [existingPhotoPath, setExistingPhotoPath] = useState('')
     const [errors, setErrors] = useState({})
 
+  const MAX_NAME_LENGTH = 50;
+  const nameRegex = /^[A-Za-z-]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const handleNameChange = (value) => {
+    setName(value.replace(/[^A-Za-z-]/g, '').slice(0, MAX_NAME_LENGTH));
+  };
+
 //Fetch users from the server
 function fetchUsers() {
     axios
@@ -49,10 +57,14 @@ function fetchUsers() {
     const newErrors = {};
     if (!name.trim()) {
       newErrors.name = 'Name is required';
+    } else if (name.length > MAX_NAME_LENGTH) {
+      newErrors.name = `Name cannot exceed ${MAX_NAME_LENGTH} characters`;
+    } else if (!nameRegex.test(name)) {
+      newErrors.name = 'Name can only contain letters and hyphens (-)';
     }
     if (!email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!email.includes('@')) {
+    } else if (!emailRegex.test(email)) {
       newErrors.email = 'Email must be valid';
     }
     if (!password.trim()) {
@@ -177,7 +189,7 @@ function fetchUsers() {
       <Paper elevation={3} sx={{ flex: '0 0 420px', p: 3, borderRadius: 3 }}>
         <Stack spacing={2}>
           <Typography variant="h4" fontWeight={700}>Users</Typography>
-          <TextField label="Name" variant="outlined" fullWidth value={name} onChange={(e) => setName(e.target.value)} />
+          <TextField label="Name" variant="outlined" fullWidth value={name} onChange={(e) => handleNameChange(e.target.value)} />
           <TextField label="Email" variant="outlined" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
           <TextField label="Password" type="password" variant="outlined" fullWidth value={password} onChange={(e) => setPassword(e.target.value)} />
           <Button component="label" variant="outlined">

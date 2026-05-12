@@ -1,7 +1,7 @@
 import './AddStudent.css';
 import axios from 'axios'
 import { useState } from 'react'
-import { Avatar, Box, Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Avatar, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import { useEffect } from 'react';
 
 const getPhotoUrl = (photoPath) => {
@@ -10,8 +10,9 @@ const getPhotoUrl = (photoPath) => {
 };
  
 function AddStudent () {
-    const MAX_ID_LENGTH = 12;
     const MAX_NAME_LENGTH = 50;
+    const COURSE_OPTIONS = ['BSIT', 'BSCS', 'BSLIS', 'BSARKI', 'BSCE', 'BSMATH'];
+    const YEAR_LEVEL_OPTIONS = ['1', '2', '3', '4', '5'];
 
     const [idNumber, setIdNumber] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -36,12 +37,6 @@ function AddStudent () {
             console.error(error);
         });
         }
-
-    // Validation function for name fields (letters and "-" only)
-    const isValidName = (name) => {
-        const nameRegex = /^[a-zA-Z-]*$/;
-        return nameRegex.test(name);
-    };
 
     // Handle photo file selection
     const handlePhotoChange = (e) => {
@@ -75,13 +70,13 @@ function AddStudent () {
     // Validation function
     const validateForm = () => {
         const newErrors = {};
+        const idRegex = /^\d{8}$/;
+        const nameRegex = /^[a-zA-Z-]+$/;
 
         if (!idNumber) {
             newErrors.idNumber = 'ID Number is required';
-        } else if (idNumber.length > MAX_ID_LENGTH) {
-            newErrors.idNumber = `ID Number cannot exceed ${MAX_ID_LENGTH} digits`;
-        } else if (parseInt(idNumber) <= 0) {
-            newErrors.idNumber = 'ID Number must be positive';
+        } else if (!idRegex.test(idNumber)) {
+            newErrors.idNumber = 'ID Number must be exactly 8 digits and contain numbers only';
         } else if (!isIdUnique(idNumber, editStudentId)) {
             newErrors.idNumber = 'ID Number already exists';
         }
@@ -90,7 +85,7 @@ function AddStudent () {
             newErrors.firstName = 'First Name is required';
         } else if (firstName.length > MAX_NAME_LENGTH) {
             newErrors.firstName = `First Name cannot exceed ${MAX_NAME_LENGTH} characters`;
-        } else if (!isValidName(firstName)) {
+        } else if (!nameRegex.test(firstName)) {
             newErrors.firstName = 'First Name can only contain letters and hyphens (-)';
         }
 
@@ -98,13 +93,13 @@ function AddStudent () {
             newErrors.lastName = 'Last Name is required';
         } else if (lastName.length > MAX_NAME_LENGTH) {
             newErrors.lastName = `Last Name cannot exceed ${MAX_NAME_LENGTH} characters`;
-        } else if (!isValidName(lastName)) {
+        } else if (!nameRegex.test(lastName)) {
             newErrors.lastName = 'Last Name can only contain letters and hyphens (-)';
         }
 
         if (middleName && middleName.length > MAX_NAME_LENGTH) {
             newErrors.middleName = `Middle Name cannot exceed ${MAX_NAME_LENGTH} characters`;
-        } else if (middleName && !isValidName(middleName)) {
+        } else if (middleName && !nameRegex.test(middleName)) {
             newErrors.middleName = 'Middle Name can only contain letters and hyphens (-)';
         }
 
@@ -120,10 +115,14 @@ function AddStudent () {
 
         if (!course) {
             newErrors.course = 'Course is required';
+        } else if (!COURSE_OPTIONS.includes(course)) {
+            newErrors.course = 'Select a valid course';
         }
 
         if (!yearLevel) {
             newErrors.yearLevel = 'Year Level is required';
+        } else if (!YEAR_LEVEL_OPTIONS.includes(yearLevel.toString())) {
+            newErrors.yearLevel = 'Year Level must be between 1 and 5';
         }
 
         if (!editStudentId && !studentPhoto) {
@@ -286,12 +285,45 @@ function AddStudent () {
         <Paper elevation={3} sx={{ flex: '0 0 420px', p: 3, borderRadius: 3 }}>
             <Stack spacing={2}>
                 <Typography variant="h4" fontWeight={700}>Add Student</Typography>
-                <TextField label="ID Number" variant="outlined" type="number" value={idNumber} onChange={(e) => setIdNumber(e.target.value)} fullWidth />
+                <TextField
+                    label="ID Number"
+                    variant="outlined"
+                    type="text"
+                    value={idNumber}
+                    onChange={(e) => setIdNumber(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                    inputProps={{ inputMode: 'numeric', maxLength: 8, pattern: '[0-9]*' }}
+                    fullWidth
+                />
                 <TextField label="First Name" variant="outlined" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} fullWidth />
                 <TextField label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} fullWidth />
                 <TextField label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} fullWidth />
-                <TextField label="Course" variant="outlined" type="text" value={course} onChange={(e) => setCourse(e.target.value)} fullWidth />
-                <TextField label="Year Level" variant="outlined" type="number" value={yearLevel} onChange={(e) => setYearLevel(e.target.value)} fullWidth />
+                <FormControl fullWidth>
+                    <InputLabel id="course-label">Course</InputLabel>
+                    <Select
+                        labelId="course-label"
+                        label="Course"
+                        value={course}
+                        onChange={(e) => setCourse(e.target.value)}
+                    >
+                        {COURSE_OPTIONS.map((option) => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl fullWidth>
+                    <InputLabel id="year-level-label">Year Level</InputLabel>
+                    <Select
+                        labelId="year-level-label"
+                        label="Year Level"
+                        value={yearLevel}
+                        onChange={(e) => setYearLevel(e.target.value)}
+                    >
+                        {YEAR_LEVEL_OPTIONS.map((option) => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 
                 <Button component="label" variant="outlined">
                     Choose Photo
