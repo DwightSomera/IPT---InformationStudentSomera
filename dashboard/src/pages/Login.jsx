@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   TextField,
@@ -12,9 +13,10 @@ import {
   CssBaseline,
 } from "@mui/material";
 
-function Login() {
+function Login({ setIsAuthenticated }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -57,8 +59,9 @@ function Login() {
           email: data.user.email,
         }),
       );
-
-      window.location.href = "/";
+      // Update client-side auth state and navigate without a full reload
+      if (typeof setIsAuthenticated === 'function') setIsAuthenticated(true);
+      navigate('/');
     } catch (err) {
       console.error("Login Error:", err);
       setError(

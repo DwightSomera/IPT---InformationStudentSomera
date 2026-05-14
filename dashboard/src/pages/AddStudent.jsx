@@ -43,6 +43,18 @@ function AddStudent () {
         setStudentPhoto(e.target.files[0]);
     };
 
+    // Sanitize name inputs: only letters and dash, max length
+    const NAME_INPUT_REGEX = /[^A-Za-z-]/g;
+    const handleFirstNameChange = (value) => {
+        setFirstName(value.replace(NAME_INPUT_REGEX, '').slice(0, MAX_NAME_LENGTH));
+    };
+    const handleLastNameChange = (value) => {
+        setLastName(value.replace(NAME_INPUT_REGEX, '').slice(0, MAX_NAME_LENGTH));
+    };
+    const handleMiddleNameChange = (value) => {
+        setMiddleName(value.replace(NAME_INPUT_REGEX, '').slice(0, MAX_NAME_LENGTH));
+    };
+
     // Check if ID is unique
     const isIdUnique = (id, currentStudentId = null) => {
         const normalizedId = id.toString();
@@ -294,9 +306,9 @@ function AddStudent () {
                     inputProps={{ inputMode: 'numeric', maxLength: 8, pattern: '[0-9]*' }}
                     fullWidth
                 />
-                <TextField label="First Name" variant="outlined" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} fullWidth />
-                <TextField label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} fullWidth />
-                <TextField label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => setMiddleName(e.target.value)} fullWidth />
+                <TextField label="First Name" variant="outlined" type="text" value={firstName} onChange={(e) => handleFirstNameChange(e.target.value)} fullWidth />
+                <TextField label="Last Name" variant="outlined" type="text" value={lastName} onChange={(e) => handleLastNameChange(e.target.value)} fullWidth />
+                <TextField label="Middle Name" variant="outlined" type="text" value={middleName} onChange={(e) => handleMiddleNameChange(e.target.value)} fullWidth />
                 <FormControl fullWidth>
                     <InputLabel id="course-label">Course</InputLabel>
                     <Select

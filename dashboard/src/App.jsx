@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useState } from 'react';
 import Home from "./pages/Home";
 import AddStudent from "./pages/AddStudent";
 import Sidebar from "./pages/Sidebar";
@@ -8,10 +9,10 @@ import Users from "./pages/Users";
 import Login from "./pages/Login";
 
 
-function ProtectedLayout() {
+function ProtectedLayout({ setIsAuthenticated }) {
   return (
     <div className="app-layout">
-      <Sidebar />
+      <Sidebar setIsAuthenticated={setIsAuthenticated} />
       <div className="main-content">
         <Outlet />
       </div>
@@ -20,8 +21,8 @@ function ProtectedLayout() {
 }
 
 function App() {
-  // Check if user data exists in localStorage
-  const isAuthenticated = !!localStorage.getItem("token");
+  // Check if user data exists in localStorage and keep it in state
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
   return (
     <BrowserRouter>
@@ -29,11 +30,11 @@ function App() {
         {/* If already logged in, redirect Login attempts to Home */}
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/" replace /> : <Login />}
+          element={isAuthenticated ? <Navigate to="/" replace /> : <Login setIsAuthenticated={setIsAuthenticated} />}
         />
 
         {/* Protected Routes: If not logged in, redirect to Login */}
-        <Route element={isAuthenticated ? <ProtectedLayout /> : <Navigate to="/login" replace />}>
+        <Route element={isAuthenticated ? <ProtectedLayout setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login" replace />}>
           <Route path="/" element={<Home />} />
           <Route path="/students" element={<AddStudent />} />
           <Route path="/add-student" element={<AddStudent />} />

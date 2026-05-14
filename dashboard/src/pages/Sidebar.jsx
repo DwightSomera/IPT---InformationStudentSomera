@@ -2,12 +2,14 @@ import './Sidebar.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
  
-function Sidebar() {
+function Sidebar({ setIsAuthenticated }) {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
+    // Clear stored auth and update app state so routes update client-side
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    if (typeof setIsAuthenticated === 'function') setIsAuthenticated(false);
     navigate('/login');
   };
 
